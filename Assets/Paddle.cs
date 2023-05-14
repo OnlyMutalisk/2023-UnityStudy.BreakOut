@@ -5,7 +5,8 @@ using UnityEngine.UI;
 
 public class Paddle : MonoBehaviour
 {
-    public string[] stageStr;
+    [Multiline(12)]
+    public string[] StageStr;
     public Sprite[] B;
     public GameObject P_Item;
     public SpriteRenderer P_ItemSr;
@@ -74,8 +75,65 @@ public class Paddle : MonoBehaviour
                 Time.timeScale = 0;
             }
         }
+    }
 
-        if (Input.GetKeyDown(KeyCode.Space)) StartCoroutine(InfinityLoop());
+    // 스테이지 초기화 (-1 재시작, 0 다음 스테이지, 숫자 스테이지)
+    public void AllReset(int _stage)
+    {
+        if (_stage == 0)
+            stage++;
+        else if (_stage != -1)
+            stage = _stage;
+        if (stage >= StageStr.Length)
+            return;
+
+        BlockGenerator();
+        StartCoroutine("BallReset");
+    }
+
+    void BlockGenerator()
+    {
+        string currentStr = StageStr[stage].Replace("\n", "");
+        currentStr = currentStr.Replace(" ", "");
+        currentStr = currentStr.Replace("\r", "");
+
+        for (int i = 0; i < currentStr.Length; i++)
+        {
+            BlockCol[i].gameObject.SetActive(false);
+            char A = currentStr[i];
+            string currentName = "Block";
+            int currentB = 0;
+
+            if (A == '*')
+                continue;
+            else if (A == '8')
+            {
+                currentB = 8;
+                currentName = "HardBlock0";
+            }
+            else if (A == '9')
+            {
+                currentB = Random.Range(0, 8);
+            }
+            else
+            {
+                currentB = int.Parse(A.ToString());
+            }
+
+            BlockCol[i].gameObject.name = currentName;
+            BlockCol[i].gameObject.GetComponent<SpriteRenderer>().sprite = B[currentB];
+            BlockCol[i].gameObject.SetActive(true);
+
+        }
+    }
+
+    IEnumerator BallReset()
+    {
+        BallAni[0].SetTrigger("Blink");
+
+        StopCoroutine("InfinityLoop");
+        yield return new WaitForSeconds(0.7f);
+        StartCoroutine("InfinityLoop");
     }
 
     IEnumerator InfinityLoop()
