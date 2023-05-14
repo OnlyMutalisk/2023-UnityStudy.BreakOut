@@ -550,6 +550,7 @@ GameObject:
   - component: {fileID: 22866387}
   - component: {fileID: 22866386}
   - component: {fileID: 22866389}
+  - component: {fileID: 22866390}
   m_Layer: 0
   m_Name: Ball0 (1)
   m_TagString: Ball
@@ -680,6 +681,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+--- !u!114 &22866390
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 22866384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f46a9680f3f2954fa16a5bdd398880a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  paddle: {fileID: 982112418}
 --- !u!1 &44678965
 GameObject:
   m_ObjectHideFlags: 0
@@ -20882,6 +20896,7 @@ GameObject:
   - component: {fileID: 1008271214}
   - component: {fileID: 1008271213}
   - component: {fileID: 1008271216}
+  - component: {fileID: 1008271217}
   m_Layer: 0
   m_Name: Ball0
   m_TagString: Ball
@@ -21012,6 +21027,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+--- !u!114 &1008271217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1008271211}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f46a9680f3f2954fa16a5bdd398880a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  paddle: {fileID: 982112418}
 --- !u!1 &1012611838
 GameObject:
   m_ObjectHideFlags: 0
@@ -32837,6 +32865,7 @@ GameObject:
   - component: {fileID: 1655509099}
   - component: {fileID: 1655509098}
   - component: {fileID: 1655509101}
+  - component: {fileID: 1655509102}
   m_Layer: 0
   m_Name: Ball0 (2)
   m_TagString: Ball
@@ -32967,6 +32996,19 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
+--- !u!114 &1655509102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1655509096}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f46a9680f3f2954fa16a5bdd398880a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  paddle: {fileID: 982112418}
 --- !u!1 &1676671543
 GameObject:
   m_ObjectHideFlags: 0
