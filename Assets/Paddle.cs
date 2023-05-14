@@ -181,6 +181,8 @@ public class Paddle : MonoBehaviour
 
     public IEnumerator BallCollisionEnter2D(Transform ThisBallTr, Rigidbody2D ThisBallRg, Ball ThisBallCs, GameObject Col, Transform ColTr, SpriteRenderer ColSr, Animator ColAni)
     {
+        Physics2D.IgnoreLayerCollision(2, 2);
+
         if (!isStart)
             yield break;
 
@@ -214,13 +216,61 @@ public class Paddle : MonoBehaviour
             case "Block":
                 BlockBreak(Col, ColTr, ColAni);
                 break;
+        }
+    }
 
+
+    // 패들이 아이템과 충돌할 때
+    void OnTriggerEnter2D(Collider2D col)
+    {
+        Destroy(col.gameObject);
+        S_Eat.Play();
+        switch(col.name)
+        {
+            // 볼 3개 전부 활성화
+            case "Item_TripleBall":
+                GameObject OneBall = BallCheck();
+                for (int i = 0; i < 3; i++)
+                {
+                    if (OneBall.name == Ball[i].name)
+                        continue;
+                    BallTr[i].position = OneBall.transform.position;
+                    Ball[i].SetActive(true);
+                    BallRg[i].velocity = Vector2.zero;
+                    BallRg[i].AddForce(Random.insideUnitCircle.normalized * ballSpeed);
+                }
+                break;
+
+            // 7.5 초 동안 패들이 커짐
+            case "Item_Big":
+                break;
+
+            // 7.5 초 동안 패들이 작아짐
+            case "Item_Small":
+                break;
+
+            // 7.5 초 동안 볼의 속도가 느려짐
+            case "Item_SlowBall":
+                break;
+
+            // 4 초 동안 불공이 됨
+            case "Item_FireBall":
+                break;
+
+            // 7.5 초 동안 자석 활성화
+            case "Item_Magnet":
+                break;
+
+            // 4 초 동안 24 발의 총알을 발사함
+            case "Item_Gun":
+                break;
         }
     }
 
     void BlockBreak(GameObject Col, Transform ColTr, Animator ColAni)
     {
         // 아이템 생성
+        ItemGenerator(ColTr.position);
 
         // 스코어 증가, 콤보당 1점, 3콤보 이상은 3점
         score += (++combo > 3) ? 3 : combo;
@@ -235,17 +285,47 @@ public class Paddle : MonoBehaviour
         StartCoroutine("BlockCheck");
     }
 
+    void ItemGenerator(Vector2 ColTr)
+    {
+        int rand = Random.Range(0, 10000);
+        if(rand < 5000)
+        {
+            string currentName = "";
+            switch(rand & 7)
+            {
+                case 0: currentName = "Item_TripleBall"; break;
+                case 1: currentName = "Item_Big"; break;
+                case 2: currentName = "Item_Small"; break;
+                case 3: currentName = "Item_SlowBall"; break;
+                case 4: currentName = "Item_FireBall"; break;
+                case 5: currentName = "Item_Magnet"; break;
+                case 6: currentName = "Item_Gun"; break;
+            }
+
+            P_ItemSr.sprite = B[rand % 7 + 11];
+            GameObject Item = Instantiate(P_Item, ColTr, Quaternion.identity);
+            Item.name = currentName;
+            Item.GetComponent<Rigidbody2D>().AddForce(Vector2.down * 0.008f);
+            Item.transform.SetParent(ItemsTr);
+            Destroy(Item, 7);
+        }
+    }
+
     IEnumerator ActiveFalse(GameObject Col)
     {
         yield return new WaitForSeconds(0.2f);
         Col.SetActive(false);
     }
 
-    void BallCheck()
+    GameObject BallCheck()
     {
         int ballCount = 0;
+        GameObject ReturnBall = null;
         foreach (GameObject OneBall in GameObject.FindGameObjectsWithTag("Ball"))
+        {
             ballCount++;
+            ReturnBall = OneBall;
+        }
 
         if(ballCount == 0)
         {
@@ -268,6 +348,15 @@ public class Paddle : MonoBehaviour
                 Clear();
             }
         }
+
+        return ReturnBall;
+    }
+
+    public void BallAddForce(Rigidbody2D ThisBallRg)
+    {
+        Vector2 dir = ThisBallRg.velocity.normalized;
+        ThisBallRg.velocity = Vector2.zero;
+        ThisBallRg.AddForce(dir * ballSpeed);
     }
 
     IEnumerator BlockCheck()
